@@ -1,4 +1,4 @@
-function [layers, heir_ind] = heir_simulated_annealing(adj)
+function [layers, hier_ind] = hier_simulated_annealing(adj)
 
 N = length(adj(:,1));
 lsize   = floor(N/5);
@@ -19,7 +19,7 @@ for ii = 1:4
 end
 layers(5).k = r((4*lsize+1):N);
 
-heir_ind = heir_ind_calc(Q_mat,N,layers);
+hier_ind = hier_ind_calc(Q_mat,N,layers);
 
 layers_id = zeros(N,1);
 update = 1; failed = 0;
@@ -196,8 +196,8 @@ for ii = 1:runtime
             update = 1;
         end
         
-        h1 = heir_ind_calc(Q_mat,N,layers_new1);
-        h2 = heir_ind_calc(Q_mat,N,layers_new2);
+        h1 = hier_ind_calc(Q_mat,N,layers_new1);
+        h2 = hier_ind_calc(Q_mat,N,layers_new2);
         
         if h1>h2
             layers_new = layers_new1;
@@ -206,22 +206,22 @@ for ii = 1:runtime
         end
     end
     
-    heir_ind_new = heir_ind_calc(Q_mat,N,layers_new);
-    delta_h = heir_ind_new-heir_ind;
+    hier_ind_new = hier_ind_calc(Q_mat,N,layers_new);
+    delta_h = hier_ind_new-hier_ind;
     
     update = 0;
     
     if delta_h > 0
         
         layers = layers_new;
-        heir_ind = heir_ind_new;
+        hier_ind = hier_ind_new;
         update=1; failed=0;
     else
         prob2 = rand;
         
         if prob2 < exp(delta_h/T)
             layers = layers_new;
-            heir_ind = heir_ind_new;
+            hier_ind = hier_ind_new;
             update=1; failed=0;
         end
     end
